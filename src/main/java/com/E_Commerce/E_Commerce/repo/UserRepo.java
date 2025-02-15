@@ -7,5 +7,5 @@ import com.E_Commerce.E_Commerce.models.User;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer> {
-
+    public User findByEmail(String email);
 }
