@@ -1,7 +1,5 @@
 package com.E_Commerce.E_Commerce.models;
 
-import java.sql.Timestamp;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
