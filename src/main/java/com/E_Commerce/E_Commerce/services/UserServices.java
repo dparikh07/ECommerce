@@ -44,4 +44,8 @@ public class UserServices {
             return null;
         }
     }
+
+    public void deleteAllUsers() {
+        userRepo.deleteAll();
+    }
 }
