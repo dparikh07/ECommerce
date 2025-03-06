@@ -19,6 +19,7 @@ public class ProductController {
     @Autowired
     ProductServices productServices;
 
+    // @PreAuthorize("hasRole('USER')")
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product product) {
         return productServices.addProduct(product);

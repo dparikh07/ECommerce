@@ -22,4 +22,8 @@ public class User {
     private String role;
     private Timestamp created_at;
     private Timestamp updated_at;
+
+    public String getUsername() {
+        return email;
+    }
 }
