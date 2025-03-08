@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.E_Commerce.E_Commerce.models.User;
@@ -16,6 +17,8 @@ public class UserServices {
 
     @Autowired
     UserRepo userRepo;
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public String greet() {
         return "Hello";
@@ -28,6 +31,9 @@ public class UserServices {
     public User addUser(User user) {
         Date date = new Date();
         user.setCreated_at(new Timestamp(date.getTime()));
+        String new_Password = encoder.encode(user.getPassword());
+        System.out.println(new_Password);
+        user.setPassword(new_Password);
         return userRepo.save(user);
     }
 
