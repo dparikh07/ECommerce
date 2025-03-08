@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
 import com.E_Commerce.E_Commerce.services.CustomUserDetailsServices;
 
 @Configuration
@@ -25,8 +24,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers("/users", "/addUser").permitAll().anyRequest()
-                                .authenticated())
+                        request -> request.requestMatchers("/api/user/register").permitAll()
+                                .requestMatchers("api/user/admin/**", "api/product/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

@@ -31,21 +31,15 @@ public class UserServices {
         return userRepo.save(user);
     }
 
-    public User loginUser(User user) {
-        User user1 = userRepo.findByEmail(user.getEmail());
-        if (user1 == null) {
-            System.out.println("Returning null");
-            return null;
-        }
-        System.out.println(user1.toString());
-        if (user.getPassword().equals(user1.getPassword())) {
-            return user1;
-        } else {
-            return null;
-        }
+    public User profile(String email) {
+        return userRepo.findByEmail(email);
     }
 
-    public void deleteAllUsers() {
-        userRepo.deleteAll();
+    public void deleteUser(int id) {
+        userRepo.deleteById(id);
+    }
+
+    public User getUser(int id) {
+        return userRepo.findById(id).orElse(null);
     }
 }
