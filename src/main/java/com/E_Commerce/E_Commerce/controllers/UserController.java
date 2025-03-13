@@ -46,6 +46,11 @@ public class UserController {
         return userServices.profile(email);
     }
 
+    @GetMapping("/login")
+    public String login(@RequestBody User user) {
+        return userServices.verify(user);
+    }
+
     @DeleteMapping("admin/delete/{id}")
     public void deleteAllUsers(@PathVariable int id) {
         userServices.deleteUser(id);

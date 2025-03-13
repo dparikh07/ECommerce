@@ -6,6 +6,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,10 @@ public class UserServices {
 
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    JWTServices jwtServices;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -47,5 +54,16 @@ public class UserServices {
 
     public User getUser(int id) {
         return userRepo.findById(id).orElse(null);
+    }
+
+    public String verify(User user) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
+                        user.getPassword()));
+        if (authentication.isAuthenticated()) {
+            return jwtServices.generateKey(user.getUsername());
+        } else {
+            return "Failure";
+        }
     }
 }
