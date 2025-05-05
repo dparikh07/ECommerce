@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.E_Commerce.E_Commerce.dtos.AddToCartRequest;
+import com.E_Commerce.E_Commerce.dtos.RemoveCartItemDTO;
+import com.E_Commerce.E_Commerce.dtos.UserIdDTO;
 import com.E_Commerce.E_Commerce.models.Cart;
 import com.E_Commerce.E_Commerce.models.Cart_Items;
 import com.E_Commerce.E_Commerce.repo.CartRepo;
@@ -63,5 +65,29 @@ public class CartServices {
             cart_ItemsRepo.save(cart_Items2);
             return newCart;
         }
+    }
+
+    public String deleteCart(UserIdDTO userId) {
+        cartRepo.delete(cartRepo.findByUserId(userId.getUserId()).get());
+        return "Success";
+    }
+
+    public Cart deleteCartItem(RemoveCartItemDTO removeCartItemDTO) {
+        Cart cart = cartRepo.findByUserId(removeCartItemDTO.getUserId()).get();
+        List<Cart_Items> cart_Items = cart.getCart_Items();
+        for (int i = 0; i < cart_Items.size(); i++) {
+            if (cart_Items.get(i).getProduct().getId() == removeCartItemDTO.getProductId()) {
+                cart_Items.remove(i);
+                cart_ItemsRepo.deleteById(cart_Items.get(i).getId());
+                cartRepo.save(cart);
+                continue;
+            }
+        }
+        return cart;
+    }
+
+    public Cart getCart(UserIdDTO userIdDTO) {
+        Cart cart = cartRepo.findByUserId(userIdDTO.getUserId()).orElse(new Cart());
+        return cart;
     }
 }
