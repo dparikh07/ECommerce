@@ -26,7 +26,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers("/api/user/register", "/api/user/login").permitAll()
+                        request -> request.requestMatchers("/api/user/register", "/api/user/login", "/api/cart/**")
+                                .permitAll()
                                 .requestMatchers("api/user/admin/**", "api/product/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
